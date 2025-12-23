@@ -8,10 +8,10 @@ import MainLogo from "./MainLogo";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  // const { loading, user, signOutUser } = useAuth();
+  const { loading, user, signOutUser } = useAuth();
   const navigate = useNavigate();
-  const user="a";
-  const loading=false;
+  // const user="a";
+  // const loading=false;
 
   // Apply theme
 useEffect(() => {
