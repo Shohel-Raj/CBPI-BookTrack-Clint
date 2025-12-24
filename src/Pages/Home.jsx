@@ -5,6 +5,7 @@ import WhyReadingMatters from "../Components/Home/WhyReadingMatters";
 import BookCard from "../Components/Common/BookCard";
 import { Link } from "react-router";
 import LoaderSpainer from "../Components/Loader/LoaderSpainer";
+import BecomeMember from "../Components/Home/BecomeMember";
 
 /* ✅ Fake / fallback book data */
 const fallbackBooks = [
@@ -168,7 +169,7 @@ const Home = () => {
         </Wraper>
       </div>
 
-      {/* Become Member Section */}
+      {/* Become Member Section
       <div className="bg-base-300 text-base-content/70 py-10 px-6 text-center relative overflow-hidden">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Unlock a World of Knowledge
@@ -184,7 +185,10 @@ const Home = () => {
         >
           Become a Member
         </Link>
-      </div>
+      </div> */}
+      <BecomeMember/>
+
+
     </div>
   );
 };

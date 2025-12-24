@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import { Outlet } from "react-router";
 import Navbar from "../Components/Common/Navbar";
 import Wraper from "../Components/Wraper";
+import Footer from "../Components/Common/Footer";
 
 const MainLayout = () => {
   return (
@@ -16,6 +17,9 @@ const MainLayout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
+      <div className="bg-base-200" >
+          <Footer />
+      </div>
 
       {/* Toast Notifications */}
       <ToastContainer />
