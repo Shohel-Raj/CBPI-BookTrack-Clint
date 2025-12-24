@@ -80,7 +80,7 @@ const MyCarousel = () => {
         emulateTouch
       >
         {slides.map((slide, i) => (
-          <div key={i} className="relative max-h-[66vh]">
+          <div key={i} className="relative max-h-[80vh]">
             {/* Image */}
             <img
               src={slide.img}
@@ -89,7 +89,7 @@ const MyCarousel = () => {
             />
 
             {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80" />
+            <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/60 to-black/80" />
 
             {/* Text */}
             <div className="absolute inset-0 flex items-center justify-center px-6">
