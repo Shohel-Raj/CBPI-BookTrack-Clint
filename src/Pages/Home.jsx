@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import Wraper from '../Components/Wraper';
+import MyCarousel from '../Components/Home/MyCarousel';
 
 const Home = () => {
 
@@ -9,7 +11,9 @@ const Home = () => {
   
   return (
     <div>
-      <h1>home</h1>
+
+        <MyCarousel/>
+
     </div>
   );
 };
