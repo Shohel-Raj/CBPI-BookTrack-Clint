@@ -5,6 +5,8 @@ import Home from "../Pages/Home";
 import ErrorPage from "../Pages/ErrorPage";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
+import AllBooks from "../Pages/AllBooks";
+import CommunityHub from "../Pages/CommunityHub";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +15,14 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
+      {
+        path:"/all-books",
+        Component:AllBooks
+      },
+      {
+        path:"/community-hub",
+        Component:CommunityHub
+      },
       {
         path:"/auth/login",
         Component:Login

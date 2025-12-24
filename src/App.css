@@ -7,7 +7,7 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-    --text: oklch(14.88% 0.025 225.6);
+  --text: oklch(14.88% 0.025 225.6);
   --background: oklch(97.39% 0.015 222.68);
   --primary: oklch(74.75% 0.139 226.06);
   --secondary: oklch(74.88% 0.186 338.41);
@@ -16,7 +16,7 @@
 @plugin "daisyui/theme" {
   name: "dark";
   default: true;
---text: oklch(97.19% 0.015 228.96);
+  --text: oklch(97.19% 0.015 228.96);
   --background: oklch(15.23% 0.025 220.26);
   --primary: oklch(71.85% 0.137 227.03);
   --secondary: oklch(41.86% 0.173 343.45);
@@ -27,10 +27,24 @@
   .my-btn {
     background-color: var(--primary);
     border: 1px solid var(--primary);
+    cursor: pointer;
   }
   .my-btn:hover {
     background-color: oklch(70% 0.13 226); /* slightly darker */
     border-color: oklch(70% 0.13 226);
+  }
+
+  .btn-out {
+    background-color: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    transition: background-color 0.3s, border-color 0.3s;
+    cursor: pointer;
+  }
+  .btn-out:hover {
+    background-color: oklch(70% 0.13 226); /* slightly darker */
+    border-color: oklch(70% 0.13 226);
+    color: white;
   }
 }
 
@@ -38,8 +52,20 @@
   .my-btn {
     background-color: var(--primary);
     border: 1px solid var(--primary);
+    cursor: pointer;
   }
   .my-btn:hover {
+    background-color: oklch(65% 0.13 227); /* slightly darker */
+    border-color: oklch(65% 0.13 227);
+  }
+  .btn-out {
+    background-color: transparent!;
+    color: white;
+    border: 1px solid var(--primary);
+    transition: background-color 0.3s, border-color 0.3s;
+    cursor: pointer;
+  }
+  .btn-out:hover {
     background-color: oklch(65% 0.13 227); /* slightly darker */
     border-color: oklch(65% 0.13 227);
   }

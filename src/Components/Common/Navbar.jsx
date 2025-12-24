@@ -5,13 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../Context/useAuth";
 import ThemeToggleButton from "../../Buttons/ThemeToggleButton";
 import MainLogo from "./MainLogo";
+import LoaderSpainer from "../Loader/LoaderSpainer";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { loading, user, signOutUser } = useAuth();
   const navigate = useNavigate();
-  // const user="a";
-  // const loading=false;
+
 
   // Apply theme
 useEffect(() => {
@@ -82,9 +82,9 @@ useEffect(() => {
 
     </>
   );
-  // if (loading) {
-  //   return <LoaderSpainer />;
-  // }
+  if (loading) {
+    return <LoaderSpainer />;
+  }
 
   return (
     <div className="relative">
@@ -131,10 +131,10 @@ useEffect(() => {
           {/* Conditional Login/Signup or User Dropdown */}
           {!loading && !user && (
             <>
-              <NavLink to="/auth/login" className="btn btn-outline">
+              <NavLink to="/auth/login" className="btn btn-out">
                 Login
               </NavLink>
-              <NavLink to="/auth/register" className="btn btn-primary">
+              <NavLink to="/auth/register" className="btn my-btn btn-primary">
                 Signup
               </NavLink>
             </>
