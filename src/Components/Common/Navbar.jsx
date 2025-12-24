@@ -12,15 +12,13 @@ const Navbar = () => {
   const { loading, user, signOutUser } = useAuth();
   const navigate = useNavigate();
 
-
   // Apply theme
-useEffect(() => {
+  useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       document.documentElement.setAttribute("data-theme", "dark");
     }
   }, []);
-
 
   const handleLogout = async () => {
     try {
@@ -78,8 +76,20 @@ useEffect(() => {
         </NavLink>
       </li>
 
-      
-
+      {user != 0 && (
+        <>
+          <li>
+            <NavLink
+              to="/Become-member"
+              className={({ isActive }) =>
+                isActive ? activeStyle : "hover:text-primary transition"
+              }
+            >
+              Become Member
+            </NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   if (loading) {
@@ -91,7 +101,7 @@ useEffect(() => {
       <div className="navbar  pl-0">
         {/* LEFT — LOGO */}
         <NavLink to="/" className="navbar-start  text-2xl font-bold pl-0">
-          <MainLogo/>
+          <MainLogo />
         </NavLink>
 
         {/* MOBILE MENU BUTTON */}
@@ -127,7 +137,7 @@ useEffect(() => {
 
         {/* DESKTOP — Theme + Login/User */}
         <div className="navbar-end hidden lg:flex gap-3 items-center">
-         <ThemeToggleButton/>
+          <ThemeToggleButton />
           {/* Conditional Login/Signup or User Dropdown */}
           {!loading && !user && (
             <>
@@ -141,9 +151,7 @@ useEffect(() => {
           )}
 
           {!loading && user && (
-            
             <div className="dropdown dropdown-end">
-
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
                   <img
@@ -161,9 +169,12 @@ useEffect(() => {
                     {user.displayName || "User"}
                   </span>
                 </li>
-               
+
                 <li>
-                  <NavLink to="/dashboard/profile" className="hover:text-primary">
+                  <NavLink
+                    to="/dashboard/profile"
+                    className="hover:text-primary"
+                  >
                     Profile
                   </NavLink>
                 </li>
@@ -245,7 +256,7 @@ useEffect(() => {
               )}
               {/* Mobile Theme Toggle */}
               <div className="px-4 mt-4">
-                <ThemeToggleButton/>
+                <ThemeToggleButton />
               </div>
             </motion.div>
           </>

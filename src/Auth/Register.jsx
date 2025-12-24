@@ -73,6 +73,7 @@ const Register = () => {
             name,
             email,
             photoURL,
+            role:"user",
             createdAt: new Date(),
           });
 

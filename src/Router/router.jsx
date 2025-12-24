@@ -7,6 +7,8 @@ import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import AllBooks from "../Pages/AllBooks";
 import CommunityHub from "../Pages/CommunityHub";
+import BecomeMembor from "../Pages/BecomeMembor";
+import ProtectedRoutes from "./ProtectedRouts";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,13 @@ const router = createBrowserRouter([
       {
         path:"/auth/register",
         Component: Register
+      },
+      {
+        path:"/become-member",
+        element:<ProtectedRoutes>
+          <BecomeMembor/>
+
+        </ProtectedRoutes>
       }
     
     ],
