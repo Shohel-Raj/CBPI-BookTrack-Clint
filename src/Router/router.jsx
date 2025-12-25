@@ -16,6 +16,8 @@ import AdminDashboardHome from "../Pages/Dashboard/AdminDAshboardHome";
 import AdminRoute from "./AdminRoute";
 import DashboardTeacher from "../Pages/Dashboard/Teacher/DashboardTeacher";
 import AddBooks from "../Pages/Dashboard/Admin/AddBooks";
+import ManageBook from "../Pages/Dashboard/Admin/ManageBook";
+import ManageUser from "../Pages/Dashboard/Admin/ManageUser";
 
 const router = createBrowserRouter([
   {
@@ -74,6 +76,22 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AddBooks />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/manage-books",
+        element: (
+          <AdminRoute>
+            <ManageBook />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUser />
           </AdminRoute>
         ),
       },
