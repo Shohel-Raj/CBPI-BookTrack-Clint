@@ -10,6 +10,8 @@ import {
   FiMoon,
   FiSun,
 } from "react-icons/fi";
+import { BiBookAdd } from "react-icons/bi";
+
 import { motion } from "framer-motion";
 import { useAuth } from "../Context/useAuth";
 import LoaderSpainer from "../Components/Loader/LoaderSpainer";
@@ -92,21 +94,17 @@ const DashboardLayout = () => {
           <nav className="flex flex-col gap-3">
             {/* Home link for all roles */}
             <SidebarLink
-  to={dashboardHomePath}
-  icon={<FiHome />}
-  label="Home"
-  isMobile={isMobile}
-  setMobileOpen={setMobileOpen}
-  isActive={
-    location.pathname === "/dashboard/member" ||
-    location.pathname === "/dashboard/teacher" ||
-    location.pathname === "/dashboard/admin" ||
-    location.pathname.startsWith("/dashboard/member/") ||
-    location.pathname.startsWith("/dashboard/teacher/") ||
-    location.pathname.startsWith("/dashboard/admin/")
-  }
-/>
-
+              to={dashboardHomePath}
+              icon={<FiHome />}
+              label="Home"
+              isMobile={isMobile}
+              setMobileOpen={setMobileOpen}
+              isActive={
+                location.pathname === "/dashboard/member" ||
+                location.pathname === "/dashboard/teacher" ||
+                location.pathname === "/dashboard/admin"
+              }
+            />
 
             {/* Profile - all roles */}
             <SidebarLink
@@ -176,7 +174,7 @@ const DashboardLayout = () => {
                 />
                 <SidebarLink
                   to="/dashboard/admin/add-books"
-                  icon={<FiStar />}
+                  icon={<BiBookAdd />}
                   label="Add Books"
                   isMobile={isMobile}
                   setMobileOpen={setMobileOpen}
@@ -214,7 +212,7 @@ const DashboardLayout = () => {
 
           <div className="flex-1">
             <div className="flex items-center justify-end ml-5 gap-4">
-              <ThemeToggleButton/>
+              <ThemeToggleButton />
               <div className="avatar">
                 <div className="w-10 rounded-full border">
                   <img src={user?.photoURL} alt="user" />
@@ -265,4 +263,3 @@ const SidebarLink = ({
     <span>{label}</span>
   </NavLink>
 );
-

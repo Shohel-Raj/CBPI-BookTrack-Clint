@@ -6,9 +6,10 @@ const BookCard = ({ book }) => {
     title,
     author,
     category,
-    coverImage,
+    coverPage,
     availableCopies,
   } = book;
+  console.log(coverPage)
 
   return (
     <div className="group flex flex-col h-full rounded-2xl bg-base-100 border border-base-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
@@ -16,7 +17,7 @@ const BookCard = ({ book }) => {
       {/* Book Cover */}
       <div className="relative h-56 overflow-hidden">
         <img
-          src={coverImage}
+          src={coverPage}
           alt={title}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />

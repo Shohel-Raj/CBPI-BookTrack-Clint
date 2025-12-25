@@ -6,6 +6,18 @@ import { useAuth } from "../Context/useAuth";
 import { getIdToken } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
 
+// icons
+import {
+  FiBook,
+  FiUser,
+  FiStar,
+  FiAward,
+  FiUsers,
+} from "react-icons/fi";
+import { FaGraduationCap, FaBookReader, FaChalkboardTeacher } from "react-icons/fa";
+import { MdLibraryBooks } from "react-icons/md";
+import { AiOutlineRead } from "react-icons/ai";
+
 const BecomeMembor = () => {
   const navigate = useNavigate();
   const { loading: authLoading, user } = useAuth();
@@ -22,7 +34,7 @@ const BecomeMembor = () => {
     position: "",
   });
 
-  // Fetch current user from backend
+  /* ================= FETCH USER ================= */
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -36,7 +48,6 @@ const BecomeMembor = () => {
 
         setDatabasedUser(data.user);
 
-        // Prefill form if pending
         if (data.user?.status === "pending") {
           if (data.user.isMember === "student") {
             setRole("student");
@@ -60,9 +71,8 @@ const BecomeMembor = () => {
             });
           }
         }
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-        toast.error("Failed to fetch user data.");
+      } catch {
+        toast.error("Failed to fetch user data");
       } finally {
         setFetchingLoader(false);
       }
@@ -71,10 +81,10 @@ const BecomeMembor = () => {
     fetchUser();
   }, [user]);
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const handleChange = (e) =>
+    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
 
+  /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -83,14 +93,14 @@ const BecomeMembor = () => {
     if (role === "student") {
       const { department, roll, RegNumber, mobile } = formData;
       if (!department || !roll || !RegNumber || !mobile) {
-        toast.error("Please fill all the student fields");
+        toast.error("Fill all student fields");
         return;
       }
       payload = { ...payload, department, roll, RegNumber, mobile };
     } else {
       const { teacherId, department, position } = formData;
       if (!teacherId || !department || !position) {
-        toast.error("Please fill all the teacher fields");
+        toast.error("Fill all teacher fields");
         return;
       }
       payload = { ...payload, teacherId, department, position };
@@ -98,26 +108,20 @@ const BecomeMembor = () => {
 
     try {
       const token = await getIdToken(auth.currentUser);
-
       await axios.put(`${import.meta.env.VITE_ApiCall}/update`, payload, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
 
-      toast.success("Membership request submitted successfully!");
+      toast.success("Membership request submitted!");
       navigate("/all-books");
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Submission failed");
+    } catch {
+      toast.error("Submission failed");
     }
   };
 
   if (authLoading || fetchingLoader) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
   const isPending = databasedUser?.status === "pending";
@@ -127,23 +131,18 @@ const BecomeMembor = () => {
       databasedUser?.role === "teacher" ||
       databasedUser?.role === "admin");
 
+  /* ================= ACTIVE ================= */
   if (isActive) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-base-100 dark:bg-base-800">
-        <div className="bg-green-100 dark:bg-green-900 p-10 rounded-lg text-center max-w-xl relative overflow-hidden">
-          {/* Animated background icons */}
-          <div className="absolute top-5 left-5 text-yellow-400 text-4xl animate-bounce opacity-30">📚</div>
-          <div className="absolute top-1/3 right-10 text-blue-400 text-5xl animate-spin opacity-20">⭐</div>
-          <div className="absolute bottom-10 left-20 text-pink-400 text-6xl animate-bounce opacity-25">📖</div>
-
-          <h2 className="text-2xl font-semibold mb-4">🎉 You are already a member!</h2>
-          <p className="text-base-content/80 mb-6">
-            Thank you for being part of our library community. Now you can explore all our books and resources.
+      <div className="min-h-screen flex items-center justify-center bg-base-100 relative overflow-hidden">
+        <FloatingIcons />
+        <div className="bg-base-200 p-10 rounded-xl shadow-xl text-center max-w-xl z-10">
+          <FiAward className="text-6xl text-primary mx-auto mb-4" />
+          <h2 className="text-2xl font-bold mb-3">You’re already a member 🎉</h2>
+          <p className="opacity-80 mb-6">
+            Enjoy full access to books and library resources.
           </p>
-          <Link
-            to="/all-books"
-            className="my-btn px-6 py-3 rounded-lg text-white font-semibold"
-          >
+          <Link to="/all-books" className="btn my-btn px-8">
             Explore Books
           </Link>
         </div>
@@ -151,140 +150,61 @@ const BecomeMembor = () => {
     );
   }
 
+  /* ================= FORM ================= */
   return (
     <div className="min-h-screen bg-base-100 text-base-content py-16 px-6 relative overflow-hidden">
-      {/* Animated background icons */}
-      <div className="absolute top-10 left-5 text-yellow-400 text-4xl animate-bounce opacity-20">📚</div>
-      <div className="absolute top-1/3 right-10 text-blue-400 text-5xl animate-spin opacity-20">⭐</div>
-      <div className="absolute bottom-10 left-20 text-pink-400 text-6xl animate-bounce opacity-20">📖</div>
-      <div className="absolute bottom-1/4 right-10 text-green-400 text-5xl animate-spin opacity-15">✨</div>
+      <FloatingIcons />
 
       <div className="max-w-3xl mx-auto relative z-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-2">Become a Member</h1>
-        <p className="text-center text-base-content/70 mb-6">
-          Join our library community and unlock access to thousands of books and resources.
+        <h1 className="text-4xl font-bold text-center mb-3">Become a Member</h1>
+        <p className="text-center opacity-70 mb-8">
+          Join our library and unlock unlimited knowledge.
         </p>
 
         {isPending && (
-          <div className="bg-yellow-100  p-6 rounded-lg mb-6 text-center relative z-10">
-            <p className="text-primary">
-              Your membership request is pending. You cannot edit the form until it is approved.
-            </p>
+          <div className="alert alert-warning mb-6">
+            <FiUser />
+            <span>Your membership request is pending approval.</span>
           </div>
         )}
 
-        <div className="bg-base-200 dark:bg-gray-900 p-8 rounded-lg shadow-md relative z-10">
-          {/* Role toggle */}
+        <div className="bg-base-200 p-8 rounded-xl shadow-lg">
+          {/* Role Toggle */}
           <div className="flex justify-center mb-6">
             <button
-              className={`px-6 py-2 rounded-l-lg font-semibold ${
-                role === "student"
-                  ? "bg-primary text-white"
-                  : "bg-base-300 dark:bg-gray-700 text-base-content"
-              }`}
+              className={`btn rounded-r-none ${role === "student" ? "btn-primary" : "btn-ghost"}`}
               onClick={() => setRole("student")}
               disabled={isPending}
             >
-              Student
+              <FaGraduationCap /> Student
             </button>
             <button
-              className={`px-6 py-2 rounded-r-lg font-semibold ${
-                role === "teacher"
-                  ? "bg-primary text-white"
-                  : "bg-base-300 dark:bg-gray-700 text-base-content"
-              }`}
+              className={`btn rounded-l-none ${role === "teacher" ? "btn-primary" : "btn-ghost"}`}
               onClick={() => setRole("teacher")}
               disabled={isPending}
             >
-              Teacher
+              <FaChalkboardTeacher /> Teacher
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {role === "student" ? (
               <>
-                <input
-                  type="text"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  placeholder="Department"
-                  className="input input-bordered w-full bg-base-100 dark:bg-gray-800"
-                  required
-                  disabled={isPending}
-                />
-                <input
-                  type="text"
-                  name="roll"
-                  value={formData.roll}
-                  onChange={handleChange}
-                  placeholder="Roll Number"
-                  className="input input-bordered w-full bg-base-100 dark:bg-gray-800"
-                  required
-                  disabled={isPending}
-                />
-                <input
-                  type="text"
-                  name="RegNumber"
-                  value={formData.RegNumber}
-                  onChange={handleChange}
-                  placeholder="Registration Number"
-                  className="input input-bordered w-full bg-base-100 dark:bg-gray-800"
-                  required
-                  disabled={isPending}
-                />
-                <input
-                  type="text"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  placeholder="Mobile Number"
-                  className="input input-bordered w-full bg-base-100 dark:bg-gray-800"
-                  required
-                  disabled={isPending}
-                />
+                <Input name="department" value={formData.department} onChange={handleChange} placeholder="Department" disabled={isPending} />
+                <Input name="roll" value={formData.roll} onChange={handleChange} placeholder="Roll Number" disabled={isPending} />
+                <Input name="RegNumber" value={formData.RegNumber} onChange={handleChange} placeholder="Registration Number" disabled={isPending} />
+                <Input name="mobile" value={formData.mobile} onChange={handleChange} placeholder="Mobile Number" disabled={isPending} />
               </>
             ) : (
               <>
-                <input
-                  type="text"
-                  name="teacherId"
-                  value={formData.teacherId}
-                  onChange={handleChange}
-                  placeholder="Teacher ID"
-                  className="input input-bordered w-full bg-base-100 dark:bg-gray-800"
-                  required
-                  disabled={isPending}
-                />
-                <input
-                  type="text"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  placeholder="Department"
-                  className="input input-bordered w-full bg-base-100 dark:bg-gray-800"
-                  required
-                  disabled={isPending}
-                />
-                <input
-                  type="text"
-                  name="position"
-                  value={formData.position}
-                  onChange={handleChange}
-                  placeholder="Position"
-                  className="input input-bordered w-full bg-base-100 dark:bg-gray-800"
-                  required
-                  disabled={isPending}
-                />
+                <Input name="teacherId" value={formData.teacherId} onChange={handleChange} placeholder="Teacher ID" disabled={isPending} />
+                <Input name="department" value={formData.department} onChange={handleChange} placeholder="Department" disabled={isPending} />
+                <Input name="position" value={formData.position} onChange={handleChange} placeholder="Position" disabled={isPending} />
               </>
             )}
 
-            <button
-              type="submit"
-              className="my-btn w-full py-3 rounded-lg font-semibold text-white uppercase"
-              disabled={isPending}
-            >
-              {isPending ? "Pending Approval..." : "Submit"}
+            <button type="submit" className="btn my-btn w-full">
+              {isPending ? "Pending Approval..." : "Submit Request"}
             </button>
           </form>
         </div>
@@ -294,3 +214,39 @@ const BecomeMembor = () => {
 };
 
 export default BecomeMembor;
+
+/* ================= INPUT ================= */
+const Input = (props) => (
+  <input
+    {...props}
+    className="input input-bordered w-full bg-base-100"
+    required
+  />
+);
+
+/* ================= FLOATING ICONS ================= */
+const FloatingIcons = () => (
+  <>
+    {[
+      FiBook,
+      FiStar,
+      FiUsers,
+      FiAward,
+      MdLibraryBooks,
+      FaBookReader,
+      FaGraduationCap,
+      FaChalkboardTeacher,
+      AiOutlineRead,
+    ].map((Icon, i) => (
+      <Icon
+        key={i}
+        className={`absolute text-primary opacity-20 text-${4 + (i % 4)}xl
+        animate-${i % 2 ? "bounce" : "pulse"}`}
+        style={{
+          top: `${Math.random() * 90}%`,
+          left: `${Math.random() * 90}%`,
+        }}
+      />
+    ))}
+  </>
+);
