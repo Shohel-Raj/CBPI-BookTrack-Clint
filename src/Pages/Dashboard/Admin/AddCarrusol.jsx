@@ -1,11 +1,11 @@
 import React from 'react';
 
-const CommunityHub = () => {
+const AddCarrusol = () => {
     return (
         <div>
-            community
+            hi
         </div>
     );
 };
 
-export default CommunityHub;
+export default AddCarrusol;

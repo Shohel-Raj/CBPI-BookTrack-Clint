@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Wraper from "../Components/Wraper";
 import MyCarousel from "../Components/Home/MyCarousel";
 import WhyReadingMatters from "../Components/Home/WhyReadingMatters";
 import BookCard from "../Components/Common/BookCard";
-import { Link } from "react-router";
 import LoaderSpainer from "../Components/Loader/LoaderSpainer";
 import BecomeMember from "../Components/Home/BecomeMember";
 
-/* ✅ Fake / fallback book data */
 const fallbackBooks = [
   {
     _id: "b001",
@@ -20,9 +19,6 @@ const fallbackBooks = [
     totalCopies: 10,
     description:
       "A proven framework for building good habits and breaking bad ones through small, consistent changes.",
-    publisher: "Penguin Random House",
-    publishedYear: 2018,
-    isbn: "9780735211292",
   },
   {
     _id: "b002",
@@ -35,9 +31,6 @@ const fallbackBooks = [
     totalCopies: 5,
     description:
       "A philosophical story about following your dreams and listening to your heart.",
-    publisher: "HarperOne",
-    publishedYear: 1993,
-    isbn: "9780062315007",
   },
   {
     _id: "b003",
@@ -50,9 +43,6 @@ const fallbackBooks = [
     totalCopies: 4,
     description:
       "A handbook of agile software craftsmanship for writing clean, readable, and maintainable code.",
-    publisher: "Prentice Hall",
-    publishedYear: 2008,
-    isbn: "9780132350884",
   },
   {
     _id: "b004",
@@ -65,49 +55,52 @@ const fallbackBooks = [
     totalCopies: 6,
     description:
       "Rules for focused success in a distracted world and achieving peak productivity.",
-    publisher: "Grand Central Publishing",
-    publishedYear: 2016,
-    isbn: "9781455586691",
-  },
-  {
-    _id: "b005",
-    title: "Introduction to Algorithms",
-    author: "Thomas H. Cormen",
-    category: "Computer Science",
-    coverImage:
-      "https://images.unsplash.com/photo-1507842217343-583bb7270b66",
-    availableCopies: 2,
-    totalCopies: 7,
-    description:
-      "Comprehensive textbook covering a wide range of algorithms in depth.",
-    publisher: "MIT Press",
-    publishedYear: 2009,
-    isbn: "9780262033848",
   },
 ];
 
 const Home = () => {
-  const [books, setBooks] = useState(fallbackBooks);
+  const [featuredBooks, setFeaturedBooks] = useState(fallbackBooks);
+  const [topBorrowedBooks, setTopBorrowedBooks] = useState(fallbackBooks);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.title = `${import.meta.env.VITE_SITE} | Home`;
 
-    fetch(`${import.meta.env.VITE_ApiCall}/books`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setBooks(data);
-        } else {
-          console.warn("API returned no data, using fallback books");
-          setBooks(fallbackBooks);
-        }
-      })
-      .catch((error) => {
-        console.error("Book API error:", error);
-        setBooks(fallbackBooks);
-      })
-      .finally(() => setLoading(false));
+    const fetchFeaturedBooks = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_ApiCall}/featured`
+        );
+        const data = res.data?.books ?? [];
+        console.log(data)
+        setFeaturedBooks(data.length ? data : fallbackBooks);
+      } catch (error) {
+        console.error("Featured Books API error:", error);
+        setFeaturedBooks(fallbackBooks);
+      }
+    };
+
+    const fetchTopBorrowedBooks = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_ApiCall}/top-borrowed`
+        );
+        const data = res.data?.books ?? [];
+        setTopBorrowedBooks(data.length ? data : fallbackBooks);
+      } catch (error) {
+        console.error("Top Borrowed Books API error:", error);
+        setTopBorrowedBooks(fallbackBooks);
+      }
+    };
+
+    const fetchAllBooks = async () => {
+      setLoading(true);
+      await fetchFeaturedBooks();
+      await fetchTopBorrowedBooks();
+      setLoading(false);
+    };
+
+    fetchAllBooks();
   }, []);
 
   if (loading) {
@@ -142,7 +135,7 @@ const Home = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {books.map((book) => (
+            {featuredBooks.map((book) => (
               <BookCard key={book._id} book={book} />
             ))}
           </div>
@@ -162,17 +155,14 @@ const Home = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {books.map((book) => (
+            {topBorrowedBooks.map((book) => (
               <BookCard key={book._id} book={book} />
             ))}
           </div>
         </Wraper>
       </div>
 
-    
-      <BecomeMember/>
-
-
+      <BecomeMember />
     </div>
   );
 };

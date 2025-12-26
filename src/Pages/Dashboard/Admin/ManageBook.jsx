@@ -68,13 +68,10 @@ const ManageBook = () => {
         if (result.isConfirmed) {
           try {
             const token = user && (await user.getIdToken());
-            await axios.delete(
-              `${import.meta.env.VITE_ApiCall}/books/${id}`,
-              {
-                headers: { Authorization: `Bearer ${token}` },
-                withCredentials: true,
-              }
-            );
+            await axios.delete(`${import.meta.env.VITE_ApiCall}/books/${id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+              withCredentials: true,
+            });
 
             swalWithBootstrapButtons.fire(
               "Deleted!",
@@ -104,9 +101,7 @@ const ManageBook = () => {
           placeholder="Search title/author"
           className="input input-bordered flex-1"
           value={filters.search}
-          onChange={(e) =>
-            setFilters({ ...filters, search: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
         />
 
         <input
@@ -114,9 +109,7 @@ const ManageBook = () => {
           placeholder="Category"
           className="input input-bordered flex-1"
           value={filters.category}
-          onChange={(e) =>
-            setFilters({ ...filters, category: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
         />
 
         <select
@@ -134,9 +127,7 @@ const ManageBook = () => {
         <select
           className="select select-bordered flex-1"
           value={filters.sort}
-          onChange={(e) =>
-            setFilters({ ...filters, sort: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
         >
           <option value="">Sort By</option>
           <option value="newest">Newest</option>
@@ -176,13 +167,15 @@ const ManageBook = () => {
                   <tr key={book._id}>
                     <td>{book.title}</td>
                     <td className="hidden md:table-cell">{book.category}</td>
-                    <td className="hidden md:table-cell">{book.availability || book.status}</td>
+                    <td className="hidden md:table-cell">
+                      {book.availability || book.status}
+                    </td>
                     <td>{book.totalCopies} Available</td>
                     <td className="flex justify-center flex-col md:flex-row gap-2">
                       <button
                         className="btn btn-sm btn-primary"
                         onClick={() =>
-                          navigate(`/books/edit/${book._id}`)
+                          navigate(`books/edit/${book._id}`)
                         }
                       >
                         Edit

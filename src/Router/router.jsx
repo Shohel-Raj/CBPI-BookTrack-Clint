@@ -1,12 +1,10 @@
 import { createBrowserRouter } from "react-router";
 import MainLayout from "../Layouts/MainLayout";
 import Home from "../Pages/Home";
-
 import ErrorPage from "../Pages/ErrorPage";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import AllBooks from "../Pages/AllBooks";
-import CommunityHub from "../Pages/CommunityHub";
 import BecomeMembor from "../Pages/BecomeMembor";
 import ProtectedRoutes from "./ProtectedRouts";
 import DashboardLayout from "../Layouts/DashboardLayout";
@@ -18,11 +16,13 @@ import DashboardTeacher from "../Pages/Dashboard/Teacher/DashboardTeacher";
 import AddBooks from "../Pages/Dashboard/Admin/AddBooks";
 import ManageBook from "../Pages/Dashboard/Admin/ManageBook";
 import ManageUser from "../Pages/Dashboard/Admin/ManageUser";
-import BorrowReturn from "../Pages/Dashboard/Admin/BorrowReturn";
 import BookDetails from "../Pages/BookDetails";
 import ProfilePage from "../Pages/ProfilePage";
 import UserBorrowBook from "../Pages/Dashboard/UserBorrowBook";
 import AboutUs from "../Pages/AboutUs";
+import ContactUs from "../Pages/ContactUs";
+import ContuctUsManage from "../Pages/Dashboard/Admin/ContuctUsManage";
+import UpdateBook from "../Pages/Dashboard/Admin/UpdateBook";
 
 const router = createBrowserRouter([
   {
@@ -40,8 +40,8 @@ const router = createBrowserRouter([
         Component: AboutUs,
       },
       {
-        path: "/community-hub",
-        Component: CommunityHub,
+        path: "/contuct-us",
+        Component: ContactUs,
       },
       {
         path: "/auth/login",
@@ -105,6 +105,7 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+     
       {
         path: "admin/all-books",
         element: (
@@ -122,10 +123,26 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "admin/manage-books",
+        path: "admin/manage-contuct-us",
         element: (
           <AdminRoute>
-            <BorrowReturn />
+            <ContuctUsManage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/manage-contuct-us",
+        element: (
+          <AdminRoute>
+            <ContuctUsManage />
+          </AdminRoute>
+        ),
+      },
+       {
+        path: "admin/all-books/books/edit/:id",
+        element: (
+          <AdminRoute>
+            <UpdateBook />
           </AdminRoute>
         ),
       },

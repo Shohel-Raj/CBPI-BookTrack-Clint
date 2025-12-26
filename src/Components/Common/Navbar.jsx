@@ -57,12 +57,12 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to="/community-hub"
+          to="/contuct-us"
           className={({ isActive }) =>
             isActive ? activeStyle : "hover:text-primary transition"
           }
         >
-          Community Hub
+          Contuct Us
         </NavLink>
       </li>
       <li>

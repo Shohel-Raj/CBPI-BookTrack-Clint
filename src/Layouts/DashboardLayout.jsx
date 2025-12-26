@@ -139,9 +139,9 @@ const DashboardLayout = () => {
                   setMobileOpen={setMobileOpen}
                 />
                 <SidebarLink
-                  to="/dashboard/admin/manage-books"
+                  to="/dashboard/admin/manage-contuct-us"
                   icon={<FiBook />}
-                  label="Manage Books"
+                  label="Manage Contuct"
                   setMobileOpen={setMobileOpen}
                 />
                 {/* <SidebarLink
