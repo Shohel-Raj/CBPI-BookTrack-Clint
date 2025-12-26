@@ -12,10 +12,10 @@ const AllBooks = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [category, setCategory] = useState("");
-  const [availability, setAvailability] = useState("");
   const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [fetchcatagory, setFetchCategory] = useState([]);
+  console.log(fetchcatagory);
   // Pagination
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -47,7 +47,6 @@ const AllBooks = () => {
         url.searchParams.append("pageSize", pageSize);
         if (debouncedSearch) url.searchParams.append("search", debouncedSearch);
         if (category) url.searchParams.append("category", category);
-        if (availability) url.searchParams.append("availability", availability);
         if (sort) url.searchParams.append("sort", sort);
 
         const { data } = await axios.get(url);
@@ -62,7 +61,16 @@ const AllBooks = () => {
     };
 
     fetchBooks();
-  }, [debouncedSearch, category, availability, sort, page]);
+  }, [debouncedSearch, category, sort, page]);
+  useEffect(() => {
+    const fetchCat = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_ApiCall}/books/categories`
+      );
+      setFetchCategory(data?.categories);
+    };
+    fetchCat();
+  }, []);
 
   if (loading) return <LoaderSpainer />;
 
@@ -81,7 +89,7 @@ const AllBooks = () => {
         </div>
 
         {/* Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
           <input
             type="text"
             value={search}
@@ -93,42 +101,17 @@ const AllBooks = () => {
           <select
             value={category}
             onChange={(e) => {
-              setPage(1);
+              setPage(1); // reset page when changing category
               setCategory(e.target.value);
             }}
             className="select select-bordered w-full bg-base-100"
           >
             <option value="">All Categories</option>
-            <option value="Fiction">Fiction</option>
-            <option value="Non-fiction">Non-fiction</option>
-            <option value="Science">Science</option>
-            <option value="History">History</option>
-          </select>
-
-          <select
-            value={availability}
-            onChange={(e) => {
-              setPage(1);
-              setAvailability(e.target.value);
-            }}
-            className="select select-bordered w-full bg-base-100"
-          >
-            <option value="">All Status</option>
-            <option value="available">Available</option>
-            <option value="borrowed">Borrowed</option>
-          </select>
-
-          <select
-            value={sort}
-            onChange={(e) => {
-              setPage(1);
-              setSort(e.target.value);
-            }}
-            className="select select-bordered w-full bg-base-100"
-          >
-            <option value="">Sort by</option>
-            <option value="newest">Newest</option>
-            <option value="popular">Most Borrowed</option>
+            {fetchcatagory.map((cat, index) => (
+              <option key={index} value={cat}>
+                {cat}
+              </option>
+            ))}
           </select>
         </div>
 

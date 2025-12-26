@@ -105,7 +105,7 @@ const Register = () => {
         createdAt: new Date(),
       };
 
-      await axios.post(`${import.meta.env.VITE_ApiCall}/users/register`, saveUser);
+      await axios.post(`${import.meta.env.VITE_ApiCall}/register`, saveUser);
 
       toast.success("Logged in with Google!");
       navigate(from, { replace: true });

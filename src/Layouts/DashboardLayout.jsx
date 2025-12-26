@@ -124,6 +124,12 @@ const DashboardLayout = () => {
                   setMobileOpen={setMobileOpen}
                 />
                 <SidebarLink
+                  to="/dashboard/admin/all-books"
+                  icon={<FiBook />}
+                  label="All Books"
+                  setMobileOpen={setMobileOpen}
+                />
+                <SidebarLink
                   to="/dashboard/admin/manage-books"
                   icon={<FiBook />}
                   label="Manage Books"

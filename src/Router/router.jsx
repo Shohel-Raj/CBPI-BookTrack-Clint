@@ -18,6 +18,9 @@ import DashboardTeacher from "../Pages/Dashboard/Teacher/DashboardTeacher";
 import AddBooks from "../Pages/Dashboard/Admin/AddBooks";
 import ManageBook from "../Pages/Dashboard/Admin/ManageBook";
 import ManageUser from "../Pages/Dashboard/Admin/ManageUser";
+import BorrowReturn from "../Pages/Dashboard/Admin/BorrowReturn";
+import BookDetails from "../Pages/BookDetails";
+import ProfilePage from "../Pages/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +51,13 @@ const router = createBrowserRouter([
           <BecomeMembor/>
 
         </ProtectedRoutes>
+      },
+      {
+        path:"/book-details/:id",
+        element:<ProtectedRoutes>
+          <BookDetails/>
+
+        </ProtectedRoutes>
       }
     
     ],
@@ -63,6 +73,12 @@ const router = createBrowserRouter([
       { index: true, element: <DashboardHome /> },
       { path: "member", element: <DashoardHomeUser /> },
       { path: "teacher", element: <DashboardTeacher /> },
+         {
+        path: "profile",
+        element: (
+            <ProfilePage />
+        )
+      },
       {
         path: "admin",
         element: (
@@ -71,6 +87,7 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      
       {
         path: "admin/add-books",
         element: (
@@ -80,7 +97,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "admin/manage-books",
+        path: "admin/all-books",
         element: (
           <AdminRoute>
             <ManageBook />
@@ -95,6 +112,15 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      {
+        path: "admin/manage-books",
+        element: (
+          <AdminRoute>
+            <BorrowReturn />
+          </AdminRoute>
+        ),
+      }
+   
     
     
     

@@ -34,6 +34,8 @@ const BecomeMembor = () => {
     position: "",
   });
 
+  console.log(databasedUser)
+
   /* ================= FETCH USER ================= */
   useEffect(() => {
     const fetchUser = async () => {

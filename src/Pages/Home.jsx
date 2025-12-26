@@ -169,23 +169,7 @@ const Home = () => {
         </Wraper>
       </div>
 
-      {/* Become Member Section
-      <div className="bg-base-300 text-base-content/70 py-10 px-6 text-center relative overflow-hidden">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Unlock a World of Knowledge
-        </h2>
-        <p className="text-lg md:text-xl mb-8 max-w-xl mx-auto">
-          Join our library today and access thousands of books, resources, and
-          exclusive events.
-        </p>
-
-        <Link
-          to="/become-member"
-          className="my-btn inline-block px-6 py-3 rounded-lg font-semibold text-white transition-colors duration-300 uppercase text-lg"
-        >
-          Become a Member
-        </Link>
-      </div> */}
+    
       <BecomeMember/>
 
 

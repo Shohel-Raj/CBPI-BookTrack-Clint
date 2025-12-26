@@ -9,7 +9,6 @@ const BookCard = ({ book }) => {
     coverPage,
     availableCopies,
   } = book;
-  console.log(coverPage)
 
   return (
     <div className="group flex flex-col h-full rounded-2xl bg-base-100 border border-base-300 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
@@ -52,7 +51,7 @@ const BookCard = ({ book }) => {
 
         {/* View Details Button */}
         <Link
-          to={`/books/${_id}`}
+          to={`/book-details/${_id}`}
           className="mt-5 w-full  btn text-center btn-out"
         >
           View Details

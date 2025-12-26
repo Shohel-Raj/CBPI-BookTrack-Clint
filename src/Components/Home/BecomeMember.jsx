@@ -37,7 +37,7 @@ const BecomeMember = () => {
 
             <div className="flex flex-wrap gap-4">
               <Link
-                to="/register"
+                to="/become-member"
                 className="my-btn px-6 py-3 rounded-lg text-white font-semibold uppercase"
               >
                 Join Now
