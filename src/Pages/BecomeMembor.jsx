@@ -17,6 +17,7 @@ import {
 import { FaGraduationCap, FaBookReader, FaChalkboardTeacher } from "react-icons/fa";
 import { MdLibraryBooks } from "react-icons/md";
 import { AiOutlineRead } from "react-icons/ai";
+import LoaderSpainer from "../Components/Loader/LoaderSpainer";
 
 const BecomeMembor = () => {
   const navigate = useNavigate();
@@ -123,13 +124,13 @@ const BecomeMembor = () => {
   };
 
   if (authLoading || fetchingLoader) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    <LoaderSpainer/>
   }
 
   const isPending = databasedUser?.status === "pending";
   const isActive =
     databasedUser?.status === "active" &&
-    (databasedUser?.isMember === "student" ||
+    (databasedUser?.role === "student" ||
       databasedUser?.role === "teacher" ||
       databasedUser?.role === "admin");
 

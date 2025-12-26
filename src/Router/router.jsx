@@ -21,6 +21,7 @@ import ManageUser from "../Pages/Dashboard/Admin/ManageUser";
 import BorrowReturn from "../Pages/Dashboard/Admin/BorrowReturn";
 import BookDetails from "../Pages/BookDetails";
 import ProfilePage from "../Pages/ProfilePage";
+import UserBorrowBook from "../Pages/Dashboard/UserBorrowBook";
 
 const router = createBrowserRouter([
   {
@@ -30,39 +31,40 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       {
-        path:"/all-books",
-        Component:AllBooks
+        path: "/all-books",
+        Component: AllBooks,
       },
       {
-        path:"/community-hub",
-        Component:CommunityHub
+        path: "/community-hub",
+        Component: CommunityHub,
       },
       {
-        path:"/auth/login",
-        Component:Login
+        path: "/auth/login",
+        Component: Login,
       },
       {
-        path:"/auth/register",
-        Component: Register
+        path: "/auth/register",
+        Component: Register,
       },
       {
-        path:"/become-member",
-        element:<ProtectedRoutes>
-          <BecomeMembor/>
-
-        </ProtectedRoutes>
+        path: "/become-member",
+        element: (
+          <ProtectedRoutes>
+            <BecomeMembor />
+          </ProtectedRoutes>
+        ),
       },
       {
-        path:"/book-details/:id",
-        element:<ProtectedRoutes>
-          <BookDetails/>
-
-        </ProtectedRoutes>
-      }
-    
+        path: "/book-details/:id",
+        element: (
+          <ProtectedRoutes>
+            <BookDetails />
+          </ProtectedRoutes>
+        ),
+      },
     ],
   },
-   {
+  {
     path: "/dashboard",
     element: (
       <ProtectedRoutes>
@@ -73,11 +75,13 @@ const router = createBrowserRouter([
       { index: true, element: <DashboardHome /> },
       { path: "member", element: <DashoardHomeUser /> },
       { path: "teacher", element: <DashboardTeacher /> },
-         {
+      {
         path: "profile",
-        element: (
-            <ProfilePage />
-        )
+        element: <ProfilePage />,
+      },
+      {
+        path: "manage-books",
+        element: <UserBorrowBook />,
       },
       {
         path: "admin",
@@ -87,7 +91,7 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-      
+
       {
         path: "admin/add-books",
         element: (
@@ -119,12 +123,8 @@ const router = createBrowserRouter([
             <BorrowReturn />
           </AdminRoute>
         ),
-      }
-   
-    
-    
-    
-    ]
+      },
+    ],
     //   { path: "admin/manage-users", element: <ManageUsers /> },
     //   { path: "admin/manage-lessons", element: <ManageLessons /> },
     //   { path: "admin/reported-lessons", element: <ReportedLessons /> },
@@ -134,7 +134,6 @@ const router = createBrowserRouter([
     //   { path: "favorites", element: <Favorites /> },
     // ],
   },
-  
 ]);
 
 export default router;

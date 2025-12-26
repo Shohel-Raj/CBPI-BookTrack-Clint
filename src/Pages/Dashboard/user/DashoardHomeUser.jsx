@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { FiBook, FiStar, FiPlus } from "react-icons/fi";
-import { Link } from "react-router";
+import { FiBookOpen, FiCalendar, FiTrendingUp, FiBook } from "react-icons/fi";
 import {
   LineChart,
   Line,
@@ -15,32 +14,54 @@ import {
 import { useAuth } from "../../../Context/useAuth";
 import LoaderSpainer from "../../../Components/Loader/LoaderSpainer";
 
-const DashoardHomeUser = () => {
+const StudentDashboardHome = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [totalLessons, setTotalLessons] = useState(0);
-  const [totalSaved, setTotalSaved] = useState(0);
-  const [recentLessons, setRecentLessons] = useState([]);
-  const [weeklyData, setWeeklyData] = useState([]);
+  const [chartData, setChartData] = useState({ labels: [], datasets: [] });
+  const [summary, setSummary] = useState({
+    totalBorrowedLast30Days: 0,
+    totalReturnedLast30Days: 0,
+    currentlyBorrowed: 0,
+  });
 
   const fetchDashboardData = async () => {
     if (!user) return;
+
     try {
       setLoading(true);
       const token = await user.getIdToken();
 
-      const resLessons = await axios.get(
-        `${import.meta.env.VITE_ApiCall}/my-public-lessons`,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.get(
+        `${import.meta.env.VITE_ApiCall}/dashboard/member`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
       );
-      setTotalLessons(resLessons.data.totalLessonsCount || 0);
 
-      const resSaved = await axios.get(
-        `${import.meta.env.VITE_ApiCall}/my-favorites`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setTotalSaved(resSaved.data.data.length || 0);
+      if (response.data.success) {
+        setChartData(response.data.chartData);
+        setSummary({
+          totalBorrowedLast30Days: response.data.summary.totalBorrowedLast30Days || 0,
+          totalReturnedLast30Days: response.data.summary.totalReturnedLast30Days || 0,
+          // We'll get currently borrowed separately or calculate if needed
+        });
+
+        // Fetch current borrowed count separately (from existing endpoint)
+        const currentRes = await axios.get(
+          `${import.meta.env.VITE_ApiCall}/my-borrowed-books`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+          }
+        );
+        setSummary((prev) => ({
+          ...prev,
+          currentlyBorrowed: currentRes.data.length || 0,
+        }));
+      }
     } catch (error) {
+      console.error(error);
       toast.error("Failed to load dashboard data");
     } finally {
       setLoading(false);
@@ -48,151 +69,152 @@ const DashoardHomeUser = () => {
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, [user]);
-
-  const fetchLessons = async () => {
-    try {
-      setLoading(true);
-      const token = await user.getIdToken();
-      const res = await axios.get(`${import.meta.env.VITE_ApiCall}/lessons`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setRecentLessons(res.data.lessons);
-
-      const weeklyCounts = Array(7).fill(0);
-      const today = new Date();
-
-      res.data.lessons.forEach((lesson) => {
-        const created = new Date(lesson.created_at);
-        const diffDays = Math.floor((today - created) / (1000 * 60 * 60 * 24));
-        if (diffDays < 7) weeklyCounts[6 - diffDays] += 1;
-      });
-
-      const chartData = weeklyCounts.map((count, idx) => {
-        const day = new Date();
-        day.setDate(today.getDate() - (6 - idx));
-        return {
-          day: day.toLocaleDateString("en-US", { weekday: "short" }),
-          count,
-        };
-      });
-
-      setWeeklyData(chartData);
-    } catch {
-      toast.error("Failed to fetch lessons");
-    } finally {
-      setLoading(false);
+    if (user) {
+      fetchDashboardData();
     }
-  };
-
-  useEffect(() => {
-    if (user) fetchLessons();
   }, [user]);
+
+  // Transform API data into recharts format
+  const lineChartData = chartData.labels?.map((label, index) => ({
+    date: new Date(label).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    }),
+    borrowed: chartData.datasets?.[0]?.data?.[index] || 0,
+    returned: chartData.datasets?.[1]?.data?.[index] || 0,
+  })) || [];
 
   if (loading) return <LoaderSpainer />;
 
   return (
     <div className="space-y-6 p-6 bg-base-100 text-base-content min-h-screen">
-      <h2 className="text-2xl font-bold">
-        Welcome, <span className="text-primary">{user?.displayName || "User"}</span>
+      <h2 className="text-3xl font-bold">
+        Welcome back,{" "}
+        <span className="text-primary">{user?.displayName || "Student"}</span>!
       </h2>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-base-200 rounded-xl shadow p-4 flex items-center gap-4">
-          <FiBook className="text-3xl text-primary" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-base-200 rounded-2xl shadow-lg p-6 flex items-center gap-5">
+          <div className="p-4 bg-primary/10 rounded-xl">
+            <FiBookOpen className="text-3xl text-primary" />
+          </div>
           <div>
-            <p className="text-sm opacity-70">Total Lessons</p>
-            <p className="text-2xl font-bold">{totalLessons}</p>
+            <p className="text-sm opacity-70">Currently Borrowed</p>
+            <p className="text-3xl font-bold text-primary">
+              {summary.currentlyBorrowed}
+            </p>
           </div>
         </div>
 
-        <div className="bg-base-200 rounded-xl shadow p-4 flex items-center gap-4">
-          <FiStar className="text-3xl text-warning" />
+        <div className="bg-base-200 rounded-2xl shadow-lg p-6 flex items-center gap-5">
+          <div className="p-4 bg-blue-500/10 rounded-xl">
+            <FiTrendingUp className="text-3xl text-blue-500" />
+          </div>
           <div>
-            <p className="text-sm opacity-70">Saved Lessons</p>
-            <p className="text-2xl font-bold">{totalSaved}</p>
+            <p className="text-sm opacity-70">Borrowed (Last 30 Days)</p>
+            <p className="text-3xl font-bold text-blue-500">
+              {summary.totalBorrowedLast30Days}
+            </p>
           </div>
         </div>
 
-        <Link
-          to="/dashboard/add-lesson"
-          className="bg-primary hover:bg-primary/90 text-primary-content rounded-xl shadow p-4 flex items-center justify-center gap-3 transition"
-        >
-          <FiPlus className="text-3xl" />
-          <span className="font-semibold">Add Lesson</span>
-        </Link>
+        <div className="bg-base-200 rounded-2xl shadow-lg p-6 flex items-center gap-5">
+          <div className="p-4 bg-green-500/10 rounded-xl">
+            <FiCalendar className="text-3xl text-green-500" />
+          </div>
+          <div>
+            <p className="text-sm opacity-70">Returned (Last 30 Days)</p>
+            <p className="text-3xl font-bold text-green-500">
+              {summary.totalReturnedLast30Days}
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-base-200 rounded-2xl shadow-lg p-6 flex items-center gap-5">
+          <div className="p-4 bg-purple-500/10 rounded-xl">
+            <FiBook className="text-3xl text-purple-500" />
+          </div>
+          <div>
+            <p className="text-sm opacity-70">Borrow Limit</p>
+            <p className="text-2xl font-bold">3 Books</p>
+            <p className="text-xs opacity-60 mt-1">
+              {3 - summary.currentlyBorrowed} slot{3 - summary.currentlyBorrowed !== 1 ? "s" : ""} left
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* Recent Lessons */}
-      <div className="bg-base-200 rounded-xl shadow p-5">
-        <h3 className="text-xl font-semibold mb-3">Recently Added Lessons</h3>
-        {recentLessons.length === 0 ? (
-          <p className="opacity-60">No lessons added yet.</p>
+      {/* Borrowing Activity Chart */}
+      <div className="bg-base-200 rounded-2xl shadow-lg p-6">
+        <h3 className="text-2xl font-semibold mb-6">
+          Your Borrowing Activity (Last 30 Days)
+        </h3>
+
+        {lineChartData.length === 0 ? (
+          <div className="text-center py-12 opacity-60">
+            <FiBookOpen className="text-6xl mx-auto mb-4 opacity-30" />
+            <p>No borrowing activity in the last 30 days.</p>
+            <p className="text-sm mt-2">Start borrowing books to see your trends!</p>
+          </div>
         ) : (
-          <ul className="space-y-2">
-            {recentLessons.map((lesson) => (
-              <li
-                key={lesson._id}
-                className="flex justify-between items-center bg-base-100 rounded-lg px-4 py-3 hover:bg-base-300 transition"
-              >
-                <span className="font-medium">{lesson.title}</span>
-                <span className="text-sm opacity-60">
-                  {new Date(lesson.created_at).toLocaleDateString()}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={lineChartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="4 4" strokeOpacity={0.3} />
+              <XAxis
+                dataKey="date"
+                tick={{ fill: "currentColor", fontSize: 12 }}
+                tickLine={false}
+              />
+              <YAxis
+                allowDecimals={false}
+                tick={{ fill: "currentColor", fontSize: 12 }}
+                tickLine={false}
+                width={30}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "hsl(var(--b2))",
+                  border: "1px solid hsl(var(--bc) / 0.2)",
+                  borderRadius: "12px",
+                  color: "hsl(var(--bc))",
+                }}
+                labelStyle={{ fontWeight: "bold" }}
+              />
+              <Line
+                type="monotone"
+                dataKey="borrowed"
+                stroke="#3b82f6"
+                strokeWidth={3}
+                dot={{ r: 5, fill: "#3b82f6" }}
+                activeDot={{ r: 8 }}
+                name="Borrowed"
+              />
+              <Line
+                type="monotone"
+                dataKey="returned"
+                stroke="#22c55e"
+                strokeWidth={3}
+                dot={{ r: 5, fill: "#22c55e" }}
+                activeDot={{ r: 8 }}
+                name="Returned"
+              />
+            </LineChart>
+          </ResponsiveContainer>
         )}
       </div>
 
-      {/* Analytics */}
-      <div className="bg-base-200 rounded-xl shadow p-5">
-        <h3 className="text-xl font-semibold mb-3">Weekly Lessons Added</h3>
-        {weeklyData.length === 0 ? (
-          <p className="opacity-60">No activity this week.</p>
-        ) : (
-          <ResponsiveContainer width="100%" height={220}>
-  <LineChart data={weeklyData} margin={{ top: 10, right: 20, left: 10, bottom: 5 }}>
-    <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.25} />
-    
-    <XAxis 
-      dataKey="day" 
-      tick={{ fill: "currentColor" }} 
-    />
-
-    <YAxis 
-      allowDecimals={false} 
-      width={40}
-      tick={{ fill: "currentColor" }}
-    />
-
-    <Tooltip
-      contentStyle={{
-        backgroundColor: "hsl(var(--b1))",
-        borderRadius: "8px",
-        border: "1px solid hsl(var(--bc) / 0.2)",
-        color: "hsl(var(--bc))",
-      }}
-    />
-
-    <Line
-      type="monotone"
-      dataKey="count"
-      stroke="#3B82F6"          // ✅ FIXED: guaranteed visible
-      strokeWidth={3}
-      dot={{ r: 5 }}             // ✅ visible points
-      activeDot={{ r: 7 }}
-    />
-  </LineChart>
-</ResponsiveContainer>
-
-        )}
+      {/* Quick Tip */}
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 text-center">
+        <p className="text-lg font-medium">
+          Tip: You can borrow up to <strong>3 books</strong> at a time as a student.
+        </p>
+        <p className="text-sm opacity-70 mt-2">
+          Return books on time to avoid any restrictions.
+        </p>
       </div>
     </div>
   );
 };
 
-export default DashoardHomeUser;
+export default StudentDashboardHome;

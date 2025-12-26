@@ -90,7 +90,7 @@ const DashboardLayout = () => {
             {loggedUser?.role === "student" && (
               <>
                 <SidebarLink
-                  to="/dashboard/my-books"
+                  to="/dashboard/manage-books"
                   icon={<FiBook />}
                   label="My Borrowed Books"
                   setMobileOpen={setMobileOpen}
@@ -106,12 +106,21 @@ const DashboardLayout = () => {
 
             {/* Teacher */}
             {loggedUser?.role === "teacher" && (
-              <SidebarLink
-                to="/dashboard/my-books"
-                icon={<FiBook />}
-                label="My Books"
-                setMobileOpen={setMobileOpen}
-              />
+              <>
+                <SidebarLink
+                  to="/dashboard/my-books"
+                  icon={<FiBook />}
+                  label="My Books"
+                  setMobileOpen={setMobileOpen}
+                />
+
+                <SidebarLink
+                  to="/dashboard/manage-books"
+                  icon={<FiBook />}
+                  label="My Borrowed Books"
+                  setMobileOpen={setMobileOpen}
+                />
+              </>
             )}
 
             {/* Admin */}
@@ -150,7 +159,7 @@ const DashboardLayout = () => {
               </>
             )}
 
-            <div className="border-t border-base-300 mt-6" />
+            <div className="border-t border-base-300 mt-60" />
 
             <SidebarLink
               to="/"
