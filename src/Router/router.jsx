@@ -22,6 +22,7 @@ import BorrowReturn from "../Pages/Dashboard/Admin/BorrowReturn";
 import BookDetails from "../Pages/BookDetails";
 import ProfilePage from "../Pages/ProfilePage";
 import UserBorrowBook from "../Pages/Dashboard/UserBorrowBook";
+import AboutUs from "../Pages/AboutUs";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/all-books",
         Component: AllBooks,
+      },
+      {
+        path: "/about-us",
+        Component: AboutUs,
       },
       {
         path: "/community-hub",
