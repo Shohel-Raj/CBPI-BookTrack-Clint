@@ -72,7 +72,6 @@ const Home = () => {
           `${import.meta.env.VITE_ApiCall}/featured`
         );
         const data = res.data?.books ?? [];
-        console.log(data)
         setFeaturedBooks(data.length ? data : fallbackBooks);
       } catch (error) {
         console.error("Featured Books API error:", error);

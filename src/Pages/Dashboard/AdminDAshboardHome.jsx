@@ -174,7 +174,7 @@ const AdminDashboardHome = () => {
       </div>
 
       {/* ================= Status Message ================= */}
-      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl p-8 text-center">
+      <div className="bg-linear-to-r from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl p-8 text-center">
         <p className="text-xl font-medium">
           Library is running smoothly with{" "}
           <strong>{summary.availableBooks}</strong> books available for borrowing.
@@ -190,11 +190,11 @@ const AdminDashboardHome = () => {
 export default AdminDashboardHome;
 
 /* ================= Reusable Stat Card ================= */
-const StatCard = ({ title, value, icon: Icon, gradient }) => {
+const StatCard = ({ title, value, icon:Icon,  gradient }) => {
   return (
     <div className="relative group">
       <div
-        className={`absolute -inset-0.5 rounded-2xl bg-gradient-to-r ${gradient} opacity-20 blur-lg group-hover:opacity-40 transition`}
+        className={`absolute -inset-0.5 rounded-2xl bg-linear-to-r ${gradient} opacity-20 blur-lg group-hover:opacity-40 transition`}
       />
 
       <div className="relative bg-base-100 border border-base-300 rounded-2xl p-6 shadow-md group-hover:shadow-2xl transition-all">
@@ -205,7 +205,7 @@ const StatCard = ({ title, value, icon: Icon, gradient }) => {
           </div>
 
           <div
-            className={`p-3 rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg`}
+            className={`p-3 rounded-xl bg-linear-to-br ${gradient} text-white shadow-lg`}
           >
             <Icon size={26} />
           </div>

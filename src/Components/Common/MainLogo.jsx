@@ -7,7 +7,7 @@ import { GrHelpBook } from "react-icons/gr";
 export default function MainLogo() {
   return (
     <div className="flex items-center">
-      <div className="relative overflow-hidden h-10 flex items-center min-w-[200px]">
+      <div className="relative overflow-hidden h-10 flex items-center min-w-50">
         {/* Text - First appearance */}
         <span className="absolute inset-0 flex items-center justify-center animate-slide-text-1">
           <h1 className="text-2xl font-bold text-primary whitespace-nowrap">

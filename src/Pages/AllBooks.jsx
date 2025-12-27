@@ -15,7 +15,6 @@ const AllBooks = () => {
   const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(false);
   const [fetchcatagory, setFetchCategory] = useState([]);
-  console.log(fetchcatagory);
   // Pagination
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);

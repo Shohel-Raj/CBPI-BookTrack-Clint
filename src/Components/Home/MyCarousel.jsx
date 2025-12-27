@@ -39,7 +39,7 @@ const MyCarousel = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_ApiCall}/slides-data`)
+    fetch(`${import.meta.env.VITE_ApiCall}/carousel`)
       .then((res) => res.json())
       .then((data) => {
         /* ✅ Validate API data */

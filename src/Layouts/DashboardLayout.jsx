@@ -156,6 +156,12 @@ const DashboardLayout = () => {
                   label="Add Books"
                   setMobileOpen={setMobileOpen}
                 />
+                <SidebarLink
+                  to="/dashboard/admin/carusal"
+                  icon={<BiBookAdd />}
+                  label="Manage Carusal"
+                  setMobileOpen={setMobileOpen}
+                />
               </>
             )}
 
