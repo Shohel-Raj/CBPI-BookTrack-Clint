@@ -25,6 +25,7 @@ import ContuctUsManage from "../Pages/Dashboard/Admin/ContuctUsManage";
 import UpdateBook from "../Pages/Dashboard/Admin/UpdateBook";
 import AddCarrusol from "../Pages/Dashboard/Admin/AddCarrusol";
 import AdminBorrowedHistory from "../Pages/Dashboard/Admin/AdminBorrowedHistory";
+import AdminBorrowReturnManagement from "../Pages/Dashboard/Admin/AdminBorrowReturnManagement";
 
 const router = createBrowserRouter([
   {
@@ -112,6 +113,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AdminBorrowedHistory />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/borrow-return-management",
+        element: (
+          <AdminRoute>
+            <AdminBorrowReturnManagement />
           </AdminRoute>
         ),
       },

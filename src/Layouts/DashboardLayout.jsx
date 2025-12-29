@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router";
-import { FiMenu, FiX, FiHome, FiUser, FiBook, FiStar } from "react-icons/fi";
+import { FiMenu, FiX, FiHome, FiUser, FiBook, FiStar, FiUsers, FiBookOpen, FiClock, FiRefreshCw, FiMail, FiImage } from "react-icons/fi";
 import { BiBookAdd } from "react-icons/bi";
 import { useAuth } from "../Context/useAuth";
 import LoaderSpainer from "../Components/Loader/LoaderSpainer";
@@ -128,38 +128,50 @@ const DashboardLayout = () => {
               <>
                 <SidebarLink
                   to="/dashboard/admin/manage-users"
-                  icon={<FiUser />}
+                  icon={<FiUsers />}
                   label="Manage Users"
                   setMobileOpen={setMobileOpen}
                 />
+
                 <SidebarLink
                   to="/dashboard/admin/all-books"
-                  icon={<FiBook />}
+                  icon={<FiBookOpen />}
                   label="All Books"
                   setMobileOpen={setMobileOpen}
                 />
-                <SidebarLink
-                  to="/dashboard/admin/manage-contuct-us"
-                  icon={<FiBook />}
-                  label="Manage Contuct"
-                  setMobileOpen={setMobileOpen}
-                />
-                <SidebarLink
-                  to="/dashboard/admin/Borrowed"
-                  icon={<FiStar />}
-                  label="Borrowed History"
-                  setMobileOpen={setMobileOpen}
-                />
+
                 <SidebarLink
                   to="/dashboard/admin/add-books"
                   icon={<BiBookAdd />}
-                  label="Add Books"
+                  label="Add New Book"
                   setMobileOpen={setMobileOpen}
                 />
+
+                <SidebarLink
+                  to="/dashboard/admin/Borrowed"
+                  icon={<FiClock />}
+                  label="Borrow History"
+                  setMobileOpen={setMobileOpen}
+                />
+
+                <SidebarLink
+                  to="/dashboard/admin/borrow-return-management"
+                  icon={<FiRefreshCw />}
+                  label="Pending Requests"
+                  setMobileOpen={setMobileOpen}
+                />
+
+                <SidebarLink
+                  to="/dashboard/admin/manage-contuct-us"
+                  icon={<FiMail />}
+                  label="Contact Messages"
+                  setMobileOpen={setMobileOpen}
+                />
+
                 <SidebarLink
                   to="/dashboard/admin/carusal"
-                  icon={<BiBookAdd />}
-                  label="Manage Carusal"
+                  icon={<FiImage />}
+                  label="Manage Carousel"
                   setMobileOpen={setMobileOpen}
                 />
               </>
