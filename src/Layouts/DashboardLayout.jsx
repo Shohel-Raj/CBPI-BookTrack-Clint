@@ -144,12 +144,12 @@ const DashboardLayout = () => {
                   label="Manage Contuct"
                   setMobileOpen={setMobileOpen}
                 />
-                {/* <SidebarLink
-                  to="/dashboard/admin/reported-books"
+                <SidebarLink
+                  to="/dashboard/admin/Borrowed"
                   icon={<FiStar />}
-                  label="Reported Books"
+                  label="Borrowed History"
                   setMobileOpen={setMobileOpen}
-                /> */}
+                />
                 <SidebarLink
                   to="/dashboard/admin/add-books"
                   icon={<BiBookAdd />}

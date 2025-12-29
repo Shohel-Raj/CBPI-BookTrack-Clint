@@ -24,6 +24,7 @@ import ContactUs from "../Pages/ContactUs";
 import ContuctUsManage from "../Pages/Dashboard/Admin/ContuctUsManage";
 import UpdateBook from "../Pages/Dashboard/Admin/UpdateBook";
 import AddCarrusol from "../Pages/Dashboard/Admin/AddCarrusol";
+import AdminBorrowedHistory from "../Pages/Dashboard/Admin/AdminBorrowedHistory";
 
 const router = createBrowserRouter([
   {
@@ -103,6 +104,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AddBooks />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/Borrowed",
+        element: (
+          <AdminRoute>
+            <AdminBorrowedHistory />
           </AdminRoute>
         ),
       },

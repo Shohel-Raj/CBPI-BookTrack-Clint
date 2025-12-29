@@ -26,6 +26,7 @@ const AdminDashboardHome = () => {
   const { user } = useAuth();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+  console.log(dashboardData)
 
   const fetchAdminDashboard = async () => {
     if (!user) return;
@@ -86,50 +87,65 @@ const AdminDashboardHome = () => {
     <div className="space-y-10 p-6 bg-base-100 min-h-screen text-base-content">
       <h1 className="text-4xl font-bold text-center">Admin Dashboard</h1>
 
-      {/* ================= Summary Cards ================= */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
-          title="Total Books"
-          value={summary.totalBooks}
-          icon={LibraryBig}
-          gradient="from-indigo-500 to-purple-500"
-        />
+     {/* ================= Summary Cards ================= */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <StatCard
+    title="Total Books"
+    value={summary.totalBooks}
+    icon={LibraryBig} // library icon fits total books
+    gradient="from-indigo-500 to-purple-500"
+  />
 
-        <StatCard
-          title="Available Books"
-          value={summary.availableBooks}
-          icon={BookCheck}
-          gradient="from-green-500 to-emerald-500"
-        />
+  <StatCard
+    title="Available Books"
+    value={summary.availableBooks}
+    icon={BookCheck} // book check for available
+    gradient="from-green-500 to-emerald-500"
+  />
 
-        <StatCard
-          title="Books on Loan"
-          value={summary.booksOnLoan}
-          icon={BookOpen}
-          gradient="from-orange-500 to-amber-500"
-        />
+  <StatCard
+    title="Total Copies"
+    value={summary.totalCopies}
+    icon={BookOpen} // open book icon for total copies
+    gradient="from-green-500 to-emerald-500"
+  />
 
-        <StatCard
-          title="Active Borrows"
-          value={summary.activeBorrows}
-          icon={Activity}
-          gradient="from-purple-500 to-fuchsia-500"
-        />
+  <StatCard
+    title="Books on Loan"
+    value={summary.booksOnLoan}
+    icon={Activity} // activity icon for borrowed books
+    gradient="from-orange-500 to-amber-500"
+  />
 
-        <StatCard
-          title="Total Borrows Ever"
-          value={summary.totalBorrowsEver}
-          icon={History}
-          gradient="from-blue-500 to-cyan-500"
-        />
+  <StatCard
+    title="Active Borrows"
+    value={summary.activeBorrows}
+    icon={BookCheck} // check mark for active borrows
+    gradient="from-purple-500 to-fuchsia-500"
+  />
 
-        <StatCard
-          title="Borrows (Last 30 Days)"
-          value={summary.borrowsLast30Days}
-          icon={TrendingUp}
-          gradient="from-pink-500 to-rose-500"
-        />
-      </div>
+  <StatCard
+    title="Total Borrows Ever"
+    value={summary.totalBorrowsEver}
+    icon={History} // history icon for total borrows
+    gradient="from-blue-500 to-cyan-500"
+  />
+
+  <StatCard
+    title="Borrows (Last 30 Days)"
+    value={summary.borrowsLast30Days}
+    icon={TrendingUp} // trending up for last 30 days
+    gradient="from-pink-500 to-rose-500"
+  />
+
+  <StatCard
+    title="Borrow Requests (Pending)"
+    value={summary.pendingBorrowRequests}
+    icon={Activity} // activity icon for pending requests
+    gradient="from-pink-500 to-rose-500"
+  />
+</div>
+
 
       {/* ================= Line Chart ================= */}
       <div className="bg-base-200 p-6 rounded-2xl shadow-xl">
