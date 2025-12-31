@@ -14,6 +14,7 @@ const Footer = () => {
 
   const resources = [
     { name: "Contact", route: "/contuct-us" },
+    { name: "Our team", route: "/developers" },
     // { name: "Privacy Policy", route: "/privacy-policy" },
     // { name: "Terms of Service", route: "/terms-of-service" },
   ];

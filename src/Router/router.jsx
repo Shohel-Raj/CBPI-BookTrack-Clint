@@ -26,6 +26,7 @@ import UpdateBook from "../Pages/Dashboard/Admin/UpdateBook";
 import AddCarrusol from "../Pages/Dashboard/Admin/AddCarrusol";
 import AdminBorrowedHistory from "../Pages/Dashboard/Admin/AdminBorrowedHistory";
 import AdminBorrowReturnManagement from "../Pages/Dashboard/Admin/AdminBorrowReturnManagement";
+import OurTeam from "../Pages/OurTeam";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/about-us",
         Component: AboutUs,
+      },
+      {
+        path: "/developers",
+        Component: OurTeam,
       },
       {
         path: "/contuct-us",
