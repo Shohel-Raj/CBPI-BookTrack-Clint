@@ -179,14 +179,7 @@ const router = createBrowserRouter([
         ),
       },
     ],
-    //   { path: "admin/manage-users", element: <ManageUsers /> },
-    //   { path: "admin/manage-lessons", element: <ManageLessons /> },
-    //   { path: "admin/reported-lessons", element: <ReportedLessons /> },
-    //   { path: "profile", element: <Profile /> },
-    //   { path: "add-lesson", element: <AddLesson /> },
-    //   { path: "my-lessons", element: <MyLessons /> },
-    //   { path: "favorites", element: <Favorites /> },
-    // ],
+
   },
 ]);
 
