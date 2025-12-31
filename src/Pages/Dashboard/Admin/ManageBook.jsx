@@ -18,8 +18,10 @@ const ManageBook = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  const [fetchCategory, setFetchCategory] = useState([]);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -30,14 +32,20 @@ const ManageBook = () => {
     sort: "",
   });
 
-  // Fetch books
+  // ================= FETCH BOOKS =================
   const fetchBooks = async () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
         `${import.meta.env.VITE_ApiCall}/books`,
-        { params: { page, ...filters } }
+        {
+          params: {
+            page,
+            ...filters, // ✅ includes category
+          },
+        }
       );
+
       setBooks(data.books);
       setTotalPages(data.totalPages);
     } catch (err) {
@@ -48,11 +56,22 @@ const ManageBook = () => {
     }
   };
 
+  // ================= FETCH CATEGORIES =================
+  useEffect(() => {
+    const fetchCat = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_ApiCall}/books/categories`
+      );
+      setFetchCategory(data?.categories || []);
+    };
+    fetchCat();
+  }, []);
+
   useEffect(() => {
     fetchBooks();
   }, [page, filters]);
 
-  // Delete book
+  // ================= DELETE BOOK =================
   const handleDelete = async (id) => {
     swalWithBootstrapButtons
       .fire({
@@ -68,10 +87,13 @@ const ManageBook = () => {
         if (result.isConfirmed) {
           try {
             const token = user && (await user.getIdToken());
-            await axios.delete(`${import.meta.env.VITE_ApiCall}/books/${id}`, {
-              headers: { Authorization: `Bearer ${token}` },
-              withCredentials: true,
-            });
+            await axios.delete(
+              `${import.meta.env.VITE_ApiCall}/books/${id}`,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+                withCredentials: true,
+              }
+            );
 
             swalWithBootstrapButtons.fire(
               "Deleted!",
@@ -94,23 +116,34 @@ const ManageBook = () => {
     <div className="min-h-screen p-3 md:p-6 bg-base-100">
       <h1 className="text-3xl font-bold mb-6">Manage Books</h1>
 
-      {/* Filters */}
+      {/* ================= FILTERS ================= */}
       <div className="flex flex-col md:flex-row gap-4 mb-4">
         <input
           type="text"
           placeholder="Search title/author"
           className="input input-bordered flex-1"
           value={filters.search}
-          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+          onChange={(e) =>
+            setFilters({ ...filters, search: e.target.value })
+          }
         />
 
-        <input
-          type="text"
-          placeholder="Category"
-          className="input input-bordered flex-1"
+        {/* CATEGORY FILTER ✅ */}
+        <select
+          className="select select-bordered flex-1"
           value={filters.category}
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-        />
+          onChange={(e) => {
+            setPage(1);
+            setFilters({ ...filters, category: e.target.value });
+          }}
+        >
+          <option value="">All Categories</option>
+          {fetchCategory.map((cat, index) => (
+            <option key={index} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
 
         <select
           className="select select-bordered flex-1"
@@ -127,7 +160,9 @@ const ManageBook = () => {
         <select
           className="select select-bordered flex-1"
           value={filters.sort}
-          onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
+          onChange={(e) =>
+            setFilters({ ...filters, sort: e.target.value })
+          }
         >
           <option value="">Sort By</option>
           <option value="newest">Newest</option>
@@ -135,10 +170,10 @@ const ManageBook = () => {
         </select>
       </div>
 
-      {/* Scrollable Table */}
+      {/* ================= TABLE ================= */}
       <div className="bg-base-200 rounded-lg shadow-md">
         <div className="overflow-x-auto">
-          <table className="table table-zebra ">
+          <table className="table table-zebra">
             <thead className="sticky top-0 bg-base-300 z-10">
               <tr>
                 <th>Title</th>
@@ -166,7 +201,9 @@ const ManageBook = () => {
                 books.map((book) => (
                   <tr key={book._id}>
                     <td>{book.title}</td>
-                    <td className="hidden md:table-cell">{book.category}</td>
+                    <td className="hidden md:table-cell">
+                      {book.category}
+                    </td>
                     <td className="hidden md:table-cell">
                       {book.availability || book.status}
                     </td>
@@ -195,7 +232,7 @@ const ManageBook = () => {
         </div>
       </div>
 
-      {/* Pagination */}
+      {/* ================= PAGINATION ================= */}
       <div className="flex justify-center mt-4 gap-2">
         <button
           className="btn btn-sm"

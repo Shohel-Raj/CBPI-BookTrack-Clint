@@ -30,7 +30,7 @@ const teamMembers = [
   },
   {
     name: "Shemo Dey",
-    designation: "CST",
+    designation: "Team Supporter",
     roll: "689158",
     image: "https://iili.io/fXOt01S.png",
   },
